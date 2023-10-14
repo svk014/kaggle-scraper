@@ -1,4 +1,4 @@
-import { KaggleBot } from '../kaggle-bot';
+import { KaggleBot } from '../bot/kaggle-bot';
 import { configProvider } from '../config';
 
 export class JobRunner {

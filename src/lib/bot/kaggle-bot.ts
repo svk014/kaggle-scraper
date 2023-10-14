@@ -1,6 +1,6 @@
 import { chromium, Page } from 'playwright';
-import { ConfigProvider } from '../lib/config';
-import { DownloadFileResponse } from '../lib/model/kaggle-bot';
+import { ConfigProvider } from '../config';
+import { DownloadFileResponse } from '../model/kaggle-bot';
 import path from 'path';
 
 export class KaggleBot {

@@ -1,14 +1,13 @@
 # 🧰 Kaggle Scraper
 
-### Features
-
-- Minimal
-- TypeScript v4
-- Testing with Jest
-- Linting with Eslint and Prettier
-- Pre-commit hooks with Husky
-- VS Code debugger scripts
-- Local development with Nodemon
+### TODO
+- ~~basic setup~~
+- ~~test downloads~~
+- scan file in batches and save progress in DB
+- update DB with sequelize ORM
+- add data to hubspot
+- add workflow management if possible
+- write documentation
 
 ### Scripts
 

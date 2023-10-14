@@ -1,6 +1,6 @@
 import { chromium, Page } from 'playwright';
 import { ConfigProvider } from '../lib/config';
-import { StoreFileResponse } from '../lib/model/kaggle-bot';
+import { DownloadFileResponse } from '../lib/model/kaggle-bot';
 import path from 'path';
 
 export class KaggleBot {
@@ -10,7 +10,7 @@ export class KaggleBot {
     this.config = config;
   }
 
-  public async storeFile(): Promise<StoreFileResponse> {
+  public async downloadUsBabyNames(): Promise<DownloadFileResponse> {
     const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -18,6 +18,7 @@ export class KaggleBot {
     await this.performSignIn(page);
     const response = await this.downloadAndSaveToPath(page);
     await page.close();
+
     return response;
   }
 
@@ -36,7 +37,9 @@ export class KaggleBot {
     await page.waitForURL('https://www.kaggle.com/');
   }
 
-  private async downloadAndSaveToPath(page: Page): Promise<StoreFileResponse> {
+  private async downloadAndSaveToPath(
+    page: Page,
+  ): Promise<DownloadFileResponse> {
     await page.goto(
       'https://www.kaggle.com/datasets/thedevastator/us-baby-names-by-year-of-birth?select=babyNamesUSYOB-full.csv',
     );

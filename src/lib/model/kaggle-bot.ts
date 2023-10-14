@@ -1,3 +1,3 @@
-export interface StoreFileResponse {
+export interface DownloadFileResponse {
   filePath: string;
 }

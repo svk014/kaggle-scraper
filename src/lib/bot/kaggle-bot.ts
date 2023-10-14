@@ -17,7 +17,9 @@ export class KaggleBot {
 
     await this.performSignIn(page);
     const response = await this.downloadAndSaveToPath(page);
+
     await page.close();
+    await browser.close();
 
     return response;
   }

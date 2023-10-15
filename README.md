@@ -4,11 +4,14 @@
 - ~~basic setup~~
 - ~~test downloads~~
 - ~~Splt files~~
-- scan file in batches and save progress in DB
-- update DB with sequelize ORM
+- ~~scan file in batches and save progress in DB~~
+- ~~update DB with sequelize ORM~~
 - ~~add data to hubspot~~
 - ~~add workflow management if possible~~
+- read from DB and push to hubspot and marked
+- skip already process csv-splits
 - write documentation
+- fix missed entries bug
 
 ### Scripts
 

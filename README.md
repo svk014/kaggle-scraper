@@ -15,6 +15,10 @@
 
 ### Scripts
 
+#### `mysql.server start`
+
+Starts the local `mysql` server, required for local development.
+
 #### `npm run start:dev`
 
 Starts the application in development using `nodemon` and `ts-node` to do hot reloading.

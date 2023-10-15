@@ -2,12 +2,13 @@ import fs from 'fs';
 import readline from 'readline';
 import { finished } from 'node:stream/promises';
 import { parse } from 'fast-csv';
+import { CsvSplitInfo } from '../model/csv-splitter';
 
 export class BulkCsvReader {
   async *batchGenerator<TResult>(
-    indexFilePath: string,
+    splitInfo: CsvSplitInfo,
   ): AsyncIterableIterator<TResult[]> {
-    const filePaths = await this.readFilePaths(indexFilePath);
+    const filePaths = await this.readFilePaths(splitInfo);
 
     for (const filePath of filePaths) {
       const promises: Promise<TResult>[] = [];
@@ -23,7 +24,9 @@ export class BulkCsvReader {
     }
   }
 
-  private async readFilePaths(indexFilePath: string) {
+  private async readFilePaths(splitInfo: CsvSplitInfo) {
+    const { indexFilePath, processedRegisterPath } = splitInfo;
+
     const indexReadStream = fs.createReadStream(indexFilePath);
     const rlStream = readline.createInterface({
       input: indexReadStream,

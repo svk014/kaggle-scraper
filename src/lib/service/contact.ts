@@ -11,9 +11,7 @@ export class ContactService {
 
   public async saveCsvToDb(splitInfo: CsvSplitInfo) {
     const csvReader = new BulkCsvReader();
-    const batchIterator = csvReader.batchGenerator<NameCsvEntry>(
-      splitInfo.indexFilePath,
-    );
+    const batchIterator = csvReader.batchGenerator<NameCsvEntry>(splitInfo);
 
     for await (const batch of batchIterator) {
       await Contact.bulKCreateFromCsvEntries(batch);

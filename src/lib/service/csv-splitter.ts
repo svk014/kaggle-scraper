@@ -16,6 +16,7 @@ export class CsvSplitter {
     return new CsvSplitInfo(
       join(this.config.workingDirectory, this.hashString(inputFilePath)),
       '_index.txt',
+      '_processed.txt',
     );
   }
 
@@ -47,6 +48,7 @@ export class CsvSplitter {
       fs.mkdirSync(splitInfo.splitFilesDir);
     }
     const indexWriteStream = fs.createWriteStream(splitInfo.indexFilePath);
+    fs.closeSync(fs.openSync(splitInfo.processedRegisterPath, 'w'));
 
     for (const fileName of fileNames) {
       const splitFiles = await this.splitFile(fileName, splitInfo);

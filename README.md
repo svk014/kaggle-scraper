@@ -11,7 +11,7 @@
 - read from DB and push to hubspot and marked
 - skip already process csv-splits
 - write documentation
-- fix missed entries bug
+- fix missed csv entries bug
 
 ### Scripts
 

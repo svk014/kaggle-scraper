@@ -1,9 +1,7 @@
 import { KaggleBot } from '../service/bot/kaggle-bot';
 import { configProvider } from '../config';
 import { CsvSplitter } from '../service/csv-splitter';
-import { Contact } from '../data/contact';
-import { BulkCsvReader } from '../service/bulkCsvReader';
-import { NameCsvEntry } from '../model/csv';
+import { ContactService } from '../service/contact';
 
 export class JobRunner {
   async runKaggleSyncJob() {
@@ -15,13 +13,8 @@ export class JobRunner {
       skipIfExists: true,
     });
 
-    const csvReader = new BulkCsvReader();
-    const batchIterator = csvReader.batchGenerator<NameCsvEntry>(
-      splitInfo.indexFilePath,
-    );
-
-    for await (const batch of batchIterator) {
-      await Contact.bulKCreateFromCsvEntries(batch);
-    }
+    const contactService = new ContactService();
+    // await contactService.saveCsvToDb(splitInfo);
+    await contactService.syncDbToHubspot();
   }
 }

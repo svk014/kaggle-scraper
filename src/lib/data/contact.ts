@@ -11,6 +11,34 @@ export class Contact extends Model {
     }));
     await Contact.bulkCreate(contacts, { ignoreDuplicates: true });
   }
+
+  static async findUnSynced(limit: number): Promise<DbContact[]> {
+    const contacts = await Contact.findAll({
+      where: {
+        syncedToCrm: false,
+      },
+      limit,
+    });
+    return contacts.map((contact) => contact.dataValues);
+  }
+
+  static async countUnSynced(): Promise<number> {
+    return await Contact.count({
+      where: {
+        syncedToCrm: false,
+      },
+    });
+  }
+
+  static async markSynced(contacts: DbContact[]) {
+    const id = contacts.map((contact) => contact.id);
+    await Contact.update(
+      { syncedToCrm: true },
+      {
+        where: { id },
+      },
+    );
+  }
 }
 
 Contact.init(

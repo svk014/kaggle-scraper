@@ -8,7 +8,7 @@
 - ~~update DB with sequelize ORM~~
 - ~~add data to hubspot~~
 - ~~add workflow management if possible~~
-- read from DB and push to hubspot and marked
+- ~~read from DB and push to hubspot and mark as done~~
 - skip already process csv-splits
 - write documentation
 - fix missed csv entries bug

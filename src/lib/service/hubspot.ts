@@ -1,13 +1,9 @@
-import { ConfigProvider } from '../config';
+import { configProvider, ConfigProvider } from '../config';
 import { Client } from '@hubspot/api-client';
 import { DbContact } from '../model/db';
 
 export class HubspotService {
-  private readonly config: ConfigProvider;
-
-  constructor(config: ConfigProvider) {
-    this.config = config;
-  }
+  private readonly config: ConfigProvider = configProvider;
 
   public async saveContactsInBulk(dbContacts: DbContact[]) {
     const hubspotClient = new Client({

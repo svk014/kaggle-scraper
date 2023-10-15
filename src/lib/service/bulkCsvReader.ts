@@ -9,6 +9,7 @@ export class BulkCsvReader {
     splitInfo: CsvSplitInfo,
   ): AsyncIterableIterator<{ items: TResult[]; filePath: string }> {
     const filePaths = await this.readFilePaths(splitInfo);
+    console.info(`Processing ${filePaths.length} csv chunk(s)`);
 
     for (const filePath of filePaths) {
       const promises: Promise<TResult>[] = [];

@@ -28,7 +28,7 @@ export class ContactService {
   }
 
   async syncDbToHubspot() {
-    console.log('Saving to Hubspot');
+    console.info('Saving to Hubspot');
     let remaining = await Contact.countUnSynced();
 
     while (remaining > 0) {

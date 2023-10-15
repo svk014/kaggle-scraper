@@ -34,9 +34,10 @@ export class CsvSplitter {
     const indexFileExists = fs.existsSync(splitInfo.indexFilePath);
 
     if (options.skipIfExists && indexFileExists) {
-      console.log('Already unzipped. Skipping unzip and split step.');
+      console.info('Already unzipped. Skipping unzip and split step.');
       return splitInfo;
     }
+    console.info('Splitting csv into chunks.');
 
     const fileNames = await this.unzipFile(inputFilePath);
     await this.splitFiles(fileNames, splitInfo);

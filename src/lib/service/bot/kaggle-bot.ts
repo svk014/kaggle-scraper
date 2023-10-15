@@ -24,9 +24,11 @@ export class KaggleBot {
     skipIfExists: boolean;
   }): Promise<void> {
     if (options.skipIfExists && this.isFileDownloaded) {
-      console.log('Already downloaded. Skipping download.');
+      console.info('Already downloaded. Skipping download.');
       return;
     }
+    console.info('Downloading csv from Kaggle');
+
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();

@@ -14,7 +14,7 @@ async function main() {
 
 main().then(() => {
   // eslint-disable-next-line no-console
-  console.log('All jobs completed successfully!');
+  console.info('All jobs completed successfully!');
   process.exit(0);
 });
 

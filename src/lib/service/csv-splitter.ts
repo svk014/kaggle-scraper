@@ -1,9 +1,13 @@
-// import { CsvSplitOutput } from '../model/csv-splitter';
+import { CsvSplitInfo } from '../model/csv-splitter';
 import { ConfigProvider } from '../config';
 import * as fs from 'fs';
 import { finished } from 'node:stream/promises';
 import { Parse } from 'unzipper';
 import { join } from 'path';
+import { createHash } from 'crypto';
+import * as readline from 'readline';
+
+const MAX_ROWS_PER_FILE = 1000;
 
 export class CsvSplitter {
   private readonly config: ConfigProvider;
@@ -12,8 +16,126 @@ export class CsvSplitter {
     this.config = config;
   }
 
-  async unzipAndSplit(inputFilePath: string): Promise<void> {
+  private info(inputFilePath: string): CsvSplitInfo {
+    return {
+      splitFilesDir: join(
+        this.config.workingDirectory,
+        this.hashString(inputFilePath),
+      ),
+      indexFile: '_index.txt',
+    };
+  }
+
+  private hashString(inputFilePath: string) {
+    return createHash('md5').update(inputFilePath).digest('hex');
+  }
+
+  async unzipAndSplit(
+    inputFilePath: string,
+    options: {
+      skipIfExists: boolean;
+    },
+  ): Promise<CsvSplitInfo> {
+    const splitInfo = this.info(inputFilePath);
+    const indexFileExists = fs.existsSync(
+      join(splitInfo.splitFilesDir, splitInfo.indexFile),
+    );
+
+    if (options.skipIfExists && indexFileExists) {
+      console.log('Already unzipped. Skipping unzip and split step.');
+      return splitInfo;
+    }
+
     const fileNames = await this.unzipFile(inputFilePath);
+    await this.splitFiles(fileNames, splitInfo);
+    return splitInfo;
+  }
+
+  private async splitFiles(fileNames: string[], splitInfo: CsvSplitInfo) {
+    if (!fs.existsSync(splitInfo.splitFilesDir)) {
+      fs.mkdirSync(splitInfo.splitFilesDir);
+    }
+    const indexWriteStream = fs.createWriteStream(
+      join(splitInfo.splitFilesDir, splitInfo.indexFile),
+    );
+
+    for (const fileName of fileNames) {
+      const splitFiles = await this.splitFile(fileName, splitInfo);
+      indexWriteStream.write(splitFiles.join('\n'));
+      indexWriteStream.write('\n');
+    }
+    indexWriteStream.end();
+  }
+
+  private async splitFile(
+    fileName: string,
+    splitInfo: CsvSplitInfo,
+  ): Promise<string[]> {
+    const readStream = fs.createReadStream(fileName);
+
+    const filePrefix = this.hashString(fileName);
+
+    const rlStream = readline.createInterface({
+      input: readStream,
+    });
+
+    let lineIndex = 0;
+    let fileIndex = 1;
+    let header: string | null = null;
+    let lines: string[] = [];
+    const splitFiles: string[] = [];
+
+    rlStream.on('line', (line) => {
+      if (lineIndex == 0) {
+        header = line;
+        lineIndex++;
+        return;
+      }
+      lines.push(line);
+
+      if (lines.length == MAX_ROWS_PER_FILE) {
+        splitFiles.push(
+          this.flushToFile(filePrefix, fileIndex, header, lines, splitInfo),
+        );
+
+        lines = [];
+        fileIndex++;
+      }
+      lineIndex++;
+    });
+
+    if (lines.length > 0) {
+      splitFiles.push(
+        this.flushToFile(filePrefix, fileIndex, header, lines, splitInfo),
+      );
+    }
+
+    await finished(readStream);
+    return splitFiles;
+  }
+
+  private flushToFile(
+    filePrefix: string,
+    currentFile: number,
+    header: string | null,
+    lines: string[],
+    splitInfo: CsvSplitInfo,
+  ): string {
+    const currentFilePath = join(
+      splitInfo.splitFilesDir,
+      `${filePrefix}-${currentFile}.csv`,
+    );
+    const writeStream = fs.createWriteStream(currentFilePath);
+
+    if (header) {
+      writeStream.write(header);
+      writeStream.write('\n');
+    }
+
+    writeStream.write(lines.join('\n'));
+    writeStream.end();
+
+    return currentFilePath;
   }
 
   private async unzipFile(inputFilePath: string): Promise<string[]> {

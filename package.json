@@ -51,8 +51,10 @@
   "dependencies": {
     "@hubspot/api-client": "^10.0.0",
     "dotenv": "^16.3.1",
+    "fast-csv": "^4.3.6",
     "jest-cucumber": "^3.0.1",
     "playwright": "^1.39.0",
+    "readline": "^1.3.0",
     "unzipper": "^0.10.14"
   }
 }

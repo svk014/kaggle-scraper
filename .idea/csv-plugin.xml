@@ -3,6 +3,20 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/work-dir/51ddd74aa760bd60c25da044fb149201/b24bfdfcb106b9a1dd463b9ff09918b4-15.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/work-dir/51ddd74aa760bd60c25da044fb149201/b24bfdfcb106b9a1dd463b9ff09918b4_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/work-dir/babyNamesUSYOB-full.csv">
           <value>
             <Attribute>

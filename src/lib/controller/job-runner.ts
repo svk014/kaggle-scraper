@@ -5,10 +5,11 @@ import { CsvSplitter } from '../service/csv-splitter';
 export class JobRunner {
   async runKaggleSyncJob() {
     const bot = new KaggleBot(configProvider);
-    if (!bot.isFileDownloaded) {
-      await bot.downloadUsBabyNames();
-    }
+    await bot.downloadUsBabyNames({ skipIfExists: true });
 
-    await new CsvSplitter(configProvider).unzipAndSplit(bot.downloadFilePath);
+    const csvSplitter = new CsvSplitter(configProvider);
+    await csvSplitter.unzipAndSplit(bot.downloadFilePath, {
+      skipIfExists: true,
+    });
   }
 }

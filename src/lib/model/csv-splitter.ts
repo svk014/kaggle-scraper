@@ -1,4 +1,4 @@
-export interface CsvSplitOutput {
-  path: string;
+export interface CsvSplitInfo {
+  splitFilesDir: string;
   indexFile: string;
 }

@@ -3,10 +3,11 @@
 ### TODO
 - ~~basic setup~~
 - ~~test downloads~~
+- ~~Splt files~~
 - scan file in batches and save progress in DB
 - update DB with sequelize ORM
-- add data to hubspot
-- add workflow management if possible
+- ~~add data to hubspot~~
+- ~~add workflow management if possible~~
 - write documentation
 
 ### Scripts

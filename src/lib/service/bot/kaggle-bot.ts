@@ -20,7 +20,13 @@ export class KaggleBot {
     return path.join(this.config.workingDirectory, this.outputFilename);
   }
 
-  public async downloadUsBabyNames(): Promise<void> {
+  public async downloadUsBabyNames(options: {
+    skipIfExists: boolean;
+  }): Promise<void> {
+    if (options.skipIfExists && this.isFileDownloaded) {
+      console.log('Already downloaded. Skipping download.');
+      return;
+    }
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();

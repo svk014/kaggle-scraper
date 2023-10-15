@@ -11,7 +11,7 @@ export class KaggleBot {
   }
 
   public async downloadUsBabyNames(): Promise<DownloadFileResponse> {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
 

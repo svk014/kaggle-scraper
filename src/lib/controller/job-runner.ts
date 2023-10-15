@@ -4,7 +4,7 @@ import { configProvider } from '../config';
 export class JobRunner {
   async runKaggleSyncJob() {
     const bot = new KaggleBot(configProvider);
-    if (!bot.downloadedFileExists) {
+    if (!bot.isFileDownloaded) {
       await bot.downloadUsBabyNames();
     }
   }

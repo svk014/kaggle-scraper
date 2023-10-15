@@ -12,7 +12,7 @@ export class KaggleBot {
     this.config = config;
   }
 
-  public get downloadedFileExists() {
+  public get isFileDownloaded() {
     return fs.existsSync(this.downloadFilePath);
   }
 

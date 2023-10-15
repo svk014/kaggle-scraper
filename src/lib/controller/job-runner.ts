@@ -1,6 +1,7 @@
 import { KaggleBot } from '../service/bot/kaggle-bot';
 import { configProvider } from '../config';
 import { CsvSplitter } from '../service/csv-splitter';
+import { Contact } from '../data/contact';
 
 export class JobRunner {
   async runKaggleSyncJob() {
@@ -11,5 +12,10 @@ export class JobRunner {
     await csvSplitter.unzipAndSplit(bot.downloadFilePath, {
       skipIfExists: true,
     });
+
+    await Contact.bulKCreateIgnoreDuplicates([
+      { firstname: 'Souvik', gender: 'M' },
+      { firstname: 'Souvik', gender: 'M' },
+    ]);
   }
 }

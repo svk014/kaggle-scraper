@@ -108,3 +108,4 @@ dist
 
 build/
 work-dir/
+*.DS_Store

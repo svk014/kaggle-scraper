@@ -15,7 +15,7 @@ export class HubspotService {
     });
 
     const inputs = dbContacts.map((contact) => ({
-      properties: { firstname: contact.name, gender: contact.gender },
+      properties: { firstname: contact.firstname, gender: contact.gender },
       associations: [],
     }));
 

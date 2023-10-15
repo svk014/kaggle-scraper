@@ -1,6 +1,6 @@
 export interface SavedContact {
-  id: string;
-  name: string;
+  id: number;
+  firstname: string;
   gender: string;
   syncedToCrm: boolean;
 }

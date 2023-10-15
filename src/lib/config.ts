@@ -15,6 +15,10 @@ export class ConfigProvider {
     return this.retrieveOrCrash('WORK_DIRECTORY');
   }
 
+  get hubspotAppToken(): string {
+    return this.retrieveOrCrash('HUBSPOT_CONTACTS_CRM_TOKEN');
+  }
+
   private retrieveOrCrash(envVar: string): string {
     const variable = process.env[envVar];
     if (!variable || variable.trim().length === 0) {

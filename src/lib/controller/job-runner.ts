@@ -1,5 +1,6 @@
 import { KaggleBot } from '../service/bot/kaggle-bot';
 import { configProvider } from '../config';
+import { CsvSplitter } from '../service/csv-splitter';
 
 export class JobRunner {
   async runKaggleSyncJob() {
@@ -7,5 +8,7 @@ export class JobRunner {
     if (!bot.isFileDownloaded) {
       await bot.downloadUsBabyNames();
     }
+
+    await new CsvSplitter(configProvider).unzipAndSplit(bot.downloadFilePath);
   }
 }

@@ -1,5 +1,5 @@
 import { CsvSplitInfo } from '../model/csv-splitter';
-import { ConfigProvider } from '../config';
+import { configProvider, ConfigProvider } from '../config';
 import * as fs from 'fs';
 import { finished } from 'node:stream/promises';
 import { Parse } from 'unzipper';
@@ -10,20 +10,13 @@ import * as readline from 'readline';
 const MAX_ROWS_PER_FILE = 1000;
 
 export class CsvSplitter {
-  private readonly config: ConfigProvider;
-
-  constructor(config: ConfigProvider) {
-    this.config = config;
-  }
+  private readonly config: ConfigProvider = configProvider;
 
   private info(inputFilePath: string): CsvSplitInfo {
-    return {
-      splitFilesDir: join(
-        this.config.workingDirectory,
-        this.hashString(inputFilePath),
-      ),
-      indexFile: '_index.txt',
-    };
+    return new CsvSplitInfo(
+      join(this.config.workingDirectory, this.hashString(inputFilePath)),
+      '_index.txt',
+    );
   }
 
   private hashString(inputFilePath: string) {
@@ -37,9 +30,7 @@ export class CsvSplitter {
     },
   ): Promise<CsvSplitInfo> {
     const splitInfo = this.info(inputFilePath);
-    const indexFileExists = fs.existsSync(
-      join(splitInfo.splitFilesDir, splitInfo.indexFile),
-    );
+    const indexFileExists = fs.existsSync(splitInfo.indexFilePath);
 
     if (options.skipIfExists && indexFileExists) {
       console.log('Already unzipped. Skipping unzip and split step.');
@@ -55,9 +46,7 @@ export class CsvSplitter {
     if (!fs.existsSync(splitInfo.splitFilesDir)) {
       fs.mkdirSync(splitInfo.splitFilesDir);
     }
-    const indexWriteStream = fs.createWriteStream(
-      join(splitInfo.splitFilesDir, splitInfo.indexFile),
-    );
+    const indexWriteStream = fs.createWriteStream(splitInfo.indexFilePath);
 
     for (const fileName of fileNames) {
       const splitFiles = await this.splitFile(fileName, splitInfo);

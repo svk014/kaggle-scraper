@@ -1,9 +1,14 @@
 import { sequelize } from './sequelize';
 import { DataTypes, Model } from 'sequelize';
-import { SavedContact } from '../model/db';
+import { NameCsvEntry } from '../model/csv';
+import { DbContact } from '../model/db';
 
 export class Contact extends Model {
-  static async bulKCreateIgnoreDuplicates(contacts: Partial<SavedContact>[]) {
+  static async bulKCreateFromCsvEntries(csvContacts: NameCsvEntry[]) {
+    const contacts: Partial<DbContact>[] = csvContacts.map((contact) => ({
+      firstname: contact.Name,
+      gender: contact.Sex,
+    }));
     await Contact.bulkCreate(contacts, { ignoreDuplicates: true });
   }
 }

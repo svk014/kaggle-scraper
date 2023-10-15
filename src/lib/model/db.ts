@@ -1,4 +1,4 @@
-export interface SavedContact {
+export interface DbContact {
   id: number;
   firstname: string;
   gender: string;

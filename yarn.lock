@@ -1530,6 +1530,11 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
 
+byline@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/byline/-/byline-5.0.0.tgz#741c5216468eadc457b03410118ad77de8c1ddb1"
+  integrity sha512-s6webAy+R4SR8XVuJWt2V2rGvhnrhxN+9S15GNuTK3wKPOXFF6RNc+8ug2XhH+2s4f+uudG4kUVYmYOQWL2g0Q==
+
 cache-base@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-base/-/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
@@ -1777,6 +1782,13 @@ cssstyle@^2.3.0:
   integrity sha512-AZL67abkUzIuvcHqk7c09cezpGNcxUxU4Ioi/05xHk4DQeTkWmGYftIE6ctU6AEt+Gn4n1lDStOtj7FKycP71A==
   dependencies:
     cssom "~0.3.6"
+
+csv-split-stream@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/csv-split-stream/-/csv-split-stream-1.0.2.tgz#d80613d839ab68372ea97fe7e30fb54be12c497c"
+  integrity sha512-1A0vhSvKKZlQohxFLRgbnFZSoWDtITpvE+aALaoFD86tyfPFlvws1qYbHrSwOITWvb3DNN2mzfoaflkpPvj1gw==
+  dependencies:
+    byline "5.0.0"
 
 cucumber-messages@8.0.0:
   version "8.0.0"

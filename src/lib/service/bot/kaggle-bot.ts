@@ -1,27 +1,35 @@
 import { chromium, Page } from 'playwright';
-import { ConfigProvider } from '../config';
-import { DownloadFileResponse } from '../model/kaggle-bot';
+import { ConfigProvider } from '../../config';
 import path from 'path';
+import * as fs from 'fs';
 
 export class KaggleBot {
   private readonly config: ConfigProvider;
+
+  private outputFilename = 'babyNamesUSYOB-full.csv.zip';
 
   constructor(config: ConfigProvider) {
     this.config = config;
   }
 
-  public async downloadUsBabyNames(): Promise<DownloadFileResponse> {
+  public get downloadedFileExists() {
+    return fs.existsSync(this.downloadFilePath);
+  }
+
+  public get downloadFilePath() {
+    return path.join(this.config.workingDirectory, this.outputFilename);
+  }
+
+  public async downloadUsBabyNames(): Promise<void> {
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
 
     await this.performSignIn(page);
-    const response = await this.downloadAndSaveToPath(page);
+    await this.downloadAndSaveToPath(page);
 
     await page.close();
     await browser.close();
-
-    return response;
   }
 
   private async performSignIn(page: Page) {
@@ -39,9 +47,7 @@ export class KaggleBot {
     await page.waitForURL('https://www.kaggle.com/');
   }
 
-  private async downloadAndSaveToPath(
-    page: Page,
-  ): Promise<DownloadFileResponse> {
+  private async downloadAndSaveToPath(page: Page): Promise<void> {
     await page.goto(
       'https://www.kaggle.com/datasets/thedevastator/us-baby-names-by-year-of-birth?select=babyNamesUSYOB-full.csv',
     );
@@ -49,11 +55,6 @@ export class KaggleBot {
     await page.getByRole('button', { name: 'get_app' }).click();
     const download = await downloadPromise;
 
-    const filePath = path.join(
-      this.config.workingDirectory,
-      download.suggestedFilename(),
-    );
-    await download.saveAs(filePath);
-    return { filePath };
+    await download.saveAs(this.downloadFilePath);
   }
 }

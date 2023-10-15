@@ -3,6 +3,7 @@ import { NameCsvEntry } from '../model/csv';
 import { Contact } from '../data/contact';
 import { CsvSplitInfo } from '../model/csv-splitter';
 import { HubspotService } from './hubspot';
+import fs from 'fs';
 
 const HUBSPOT_UPLOAD_BATCH_SIZE = 100;
 
@@ -13,9 +14,17 @@ export class ContactService {
     const csvReader = new BulkCsvReader();
     const batchIterator = csvReader.batchGenerator<NameCsvEntry>(splitInfo);
 
+    const writeStream = fs.createWriteStream(splitInfo.processedRegisterPath, {
+      flags: 'a',
+    });
+
     for await (const batch of batchIterator) {
-      await Contact.bulKCreateFromCsvEntries(batch);
+      await Contact.bulKCreateFromCsvEntries(batch.items);
+      writeStream.write(batch.filePath);
+      writeStream.write('\n');
     }
+
+    writeStream.end();
   }
 
   async syncDbToHubspot() {

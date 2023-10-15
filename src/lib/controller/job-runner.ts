@@ -14,7 +14,7 @@ export class JobRunner {
     });
 
     const contactService = new ContactService();
-    // await contactService.saveCsvToDb(splitInfo);
+    await contactService.saveCsvToDb(splitInfo);
     await contactService.syncDbToHubspot();
   }
 }

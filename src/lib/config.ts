@@ -19,6 +19,22 @@ export class ConfigProvider {
     return this.retrieveOrCrash('HUBSPOT_CONTACTS_CRM_TOKEN');
   }
 
+  get dbUser(): string {
+    return this.retrieveOrCrash('DATABASE_USER');
+  }
+
+  get dbPassword(): string {
+    return this.retrieveOrCrash('DATABASE_PASSWORD');
+  }
+
+  get dbName(): string {
+    return this.retrieveOrCrash('DATABASE_NAME');
+  }
+
+  get dbHost(): string {
+    return this.retrieveOrCrash('DATABASE_HOST');
+  }
+
   private retrieveOrCrash(envVar: string): string {
     const variable = process.env[envVar];
     if (!variable || variable.trim().length === 0) {

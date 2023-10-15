@@ -1,7 +1,10 @@
 import { Sequelize } from 'sequelize';
+import { configProvider } from '../config';
 
-export const sequelize = new Sequelize('kaggle_data', 'test_user', 'password', {
-  host: '127.0.0.1',
+const { dbName, dbUser, dbPassword, dbHost } = configProvider;
+
+export const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+  host: dbHost,
   dialect: 'mysql',
   logging: false,
 });

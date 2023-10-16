@@ -96,13 +96,14 @@ export class CsvSplitter {
       lineIndex++;
     });
 
+    await finished(readStream);
+
     if (lines.length > 0) {
       splitFiles.push(
         this.flushToFile(filePrefix, fileIndex, header, lines, splitInfo),
       );
     }
 
-    await finished(readStream);
     return splitFiles;
   }
 

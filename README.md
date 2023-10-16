@@ -1,17 +1,23 @@
 # 🧰 Kaggle Scraper
 
+### Description
+This repository contains `typescript` code. Following is a step-by-step guide of tasks performed by the code,
+
+1. Csv file is scraped from `kaggle.com` using `playwright`.
+2. Since, the downloaded csv is large. The csv is split into multiple csv files, each containing 1000 lines.
+3. Each split csv is individually read, and stored into a `mysql` database using `sequelize` orm.
+4. For each split csv, all 1000 entries in the file is stored into the database using a single bulk create operation.
+5. Once all split csv files are stored in the database, the DB entries are read (100 entries at a time), uploaded to `Hubspot` in bulk, and marked as synced.
+
+#### Design details and considerations
+- Code is organised into services, controllers, and models.
+- Progress from each step is continuously saved, therefore the code can resume from last state in case of errors.
+- The input csv is split into multiple files, so that, if needed, multiple worker-threads can process csv files in parallel.
+- At a time, only 100 contacts are read and synced to Hubspot as Hubspot has a batch limit of 100 contacts.
+- Contacts upload to Hubspot are marked as synced in the DB. This makes the system resilient to duplication on failures.
+
 ### TODO
-- ~~basic setup~~
-- ~~test downloads~~
-- ~~Splt files~~
-- ~~scan file in batches and save progress in DB~~
-- ~~update DB with sequelize ORM~~
-- ~~add data to hubspot~~
-- ~~add workflow management if possible~~
-- ~~read from DB and push to hubspot and mark as done~~
-- ~~skip already processed csv-splits~~
-- write documentation
-- fix missed csv entries bug
+- Add unit tests
 
 ### Scripts
 

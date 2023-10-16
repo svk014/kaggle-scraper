@@ -11,9 +11,10 @@ This repository contains `typescript` code. Following is a step-by-step guide of
 
 #### Design details and considerations
 - Code is organised into services, controllers, and models.
+- All credentials are read from .env file.
 - Progress from each step is continuously saved, therefore the code can resume from last state in case of errors.
 - The input csv is split into multiple files, so that, if needed, multiple worker-threads can process csv files in parallel.
-- At a time, only 100 contacts are read and synced to Hubspot as Hubspot has a batch limit of 100 contacts.
+- At a time, only 100 contacts are read and synced to Hubspot as Hubspot has a batch limit of 100 contacts per API call.
 - Contacts upload to Hubspot are marked as synced in the DB. This makes the system resilient to duplication on failures.
 
 ### TODO
